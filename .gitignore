@@ -1,6 +1,8 @@
 ## Custom
 .devSecrets.md
 appsettings.Development.json
+server/devDB/
+server/devDB/*
 
 ## Microsoft dotnet gitignore:
 
