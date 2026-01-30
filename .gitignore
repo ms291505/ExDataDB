@@ -1,5 +1,6 @@
 ## Custom
 .devSecrets.md
+appsettings.Development.json
 
 ## Microsoft dotnet gitignore:
 
