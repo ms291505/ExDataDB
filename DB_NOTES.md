@@ -62,3 +62,18 @@ Add the following to `appsettings.Development.json`:
 ```
 
 Make sure that the password matches. This process uses the `sa` account, which should be disabled in production. I think it's probably fine for a local development database.
+
+## Querying ExDataDB from an Interactive Shell
+
+Start an interactive shell in the container and then connect to SQL Server as above. Once the interactive SQL Server shell prompt shows run the following to use the ExDataEB:
+
+```SQL
+USE exdatadb;
+GO
+```
+
+You should see the following:
+
+  > Changed database context to 'ExDataDB'.
+
+I tried to find some other tools, but Microsoft seems to be pushing everyone to use Visual Studio or VS Code. There are probably some good ways to explore the data that way.
