@@ -1,4 +1,5 @@
 using ExData.Data;
+using ExData.Data.Seed;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -13,8 +14,7 @@ var app = builder.Build();
 using (var scope = app.Services.CreateScope())
 {
     var db = scope.ServiceProvider.GetRequiredService<ExDataDb>();
-    await db.Database.OpenConnectionAsync();
-    await db.Database.CloseConnectionAsync();
+    await LoadExercisesJson.InsertExercises(db);
 }
 
 app.MapGet("/", () => "Hello World!");
