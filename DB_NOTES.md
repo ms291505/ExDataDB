@@ -23,6 +23,12 @@ docker run -e "ACCEPT_EULA=Y" -e "MSSQL_SA_PASSWORD=YourStrongPassw0rd" \
    mcr.microsoft.com/mssql/server:2025-latest
 ```
 
+There are a few ways to verify that this was successful:
+
+1. Check Docker Desktop
+1. Run `docker ps`
+1. Verify that the server is listening for connections by running `docker logs sql1 | grep connection`. You should see an entry reading "SQL Server is now ready for client connections".
+
 Then run the following to start an interactive shell in the container.
 
 ```bash
@@ -43,7 +49,7 @@ SELECT name FROM sys.databases;
 GO
 ```
 
-You should see the database in the list of database names.
+You should see the database in the list of database names. I think this could be automated somehow on the initial create of the container, but I haven't figured that out yet.
 
 ## Connecting the App to the DB
 
