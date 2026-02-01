@@ -26,7 +26,10 @@ builder.Services.AddDbContext<ExDataDb>(options =>
 
 var app = builder.Build();
 
-app.UseCors("AllowViteDev");
+if (app.Environment.IsDevelopment())
+{
+    app.UseCors("AllowViteDev");
+}
 
 using (var scope = app.Services.CreateScope())
 {
