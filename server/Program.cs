@@ -36,8 +36,15 @@ using (var scope = app.Services.CreateScope())
     var db = scope.ServiceProvider.GetRequiredService<ExDataDb>();
     await LoadExercisesJson.InsertExercises(db);
 }
+var api = app.MapGroup("/api");
 
-app.MapGet("/", () => "Hello World!");
-app.MapGet("/hello", () => new { message = "Hello!" });
+api.MapGet("/", () => "Hello World!");
+api.MapGet("/hello", () => TypedResults.Ok(new { message = "Hello!" }));
+api.MapGet("/not-found", () => TypedResults.NotFound(new { message = "Not Found At All!" }));
+api.MapGet("/bad-response", () => TypedResults.BadRequest());
+api.MapGet("/unauthorized", () => TypedResults.Unauthorized());
+api.MapGet("/forbidden", () => TypedResults.Forbid());
+api.MapGet("/created", () => TypedResults.Created());
+api.MapGet("/conflict", () => TypedResults.Conflict());
 
 app.Run();

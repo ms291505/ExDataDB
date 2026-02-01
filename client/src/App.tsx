@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { hello } from './api/api'
+import { hello, notFound } from './api/api'
 import reactLogo from './assets/react.svg'
 import viteLogo from '/vite.svg'
 import './App.css'
@@ -12,6 +12,11 @@ function App() {
   async function testIt() {
     const response = await hello();
     setMessage(response.message);
+  }
+
+  async function errorTest() {
+    await notFound();
+    return null;
   }
 
   return (
@@ -39,6 +44,18 @@ function App() {
       <div>
         <button
           onClick={testIt}
+        >
+          Test This Bad Boy!
+        </button>
+        {
+          message
+            ? <p>{message}</p>
+            : <p>"Waiting to test."</p>
+        }
+      </div>
+      <div>
+        <button
+          onClick={errorTest}
         >
           Test This Bad Boy!
         </button>
