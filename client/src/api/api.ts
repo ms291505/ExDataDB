@@ -1,5 +1,7 @@
-const API_BASE: string = "";
+import type { Hello } from "../types";
 
+
+const API_BASE = import.meta.env.VITE_API_URL;
 
 const createPath = (segment: string = "") => {
   if (segment == "") return `${API_BASE}/`;
@@ -13,13 +15,16 @@ const createPath = (segment: string = "") => {
   );
 }
 
-export async function hello(): Promise<string> {
-  const response = await fetch(createPath(), {
+export async function hello(): Promise<Hello> {
+  const response = await fetch(createPath("hello"), {
     method: "GET",
     credentials: "include"
   });
+  console.log("VITE_API_URL:", import.meta.env.VITE_API_URL);
 
   if (!response.ok) throw new Error("Failed the hello handshake.");
+
+  console.log(response);
 
   return response.json();
 }
