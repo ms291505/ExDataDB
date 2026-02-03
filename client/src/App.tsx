@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import { hello, notFound } from './api/api'
+import { ApiError } from './library/responses.ts'
 import reactLogo from './assets/react.svg'
 import viteLogo from '/vite.svg'
 import './App.css'
@@ -8,6 +9,7 @@ function App() {
   const [count, setCount] = useState(0)
 
   const [message, setMessage] = useState("");
+  const [errMessage, setErrMessage] = useState("");
 
   async function testIt() {
     const response = await hello();
@@ -15,8 +17,17 @@ function App() {
   }
 
   async function errorTest() {
-    await notFound();
-    return null;
+    try {
+
+      await notFound();
+    } catch (err) {
+      if (err instanceof ApiError) {
+        setErrMessage(err.message);
+      } else {
+        throw new Error("Unkown error occured.");
+      }
+    }
+
   }
 
   return (
@@ -60,8 +71,8 @@ function App() {
           Test This Bad Boy!
         </button>
         {
-          message
-            ? <p>{message}</p>
+          errMessage
+            ? <p>{errMessage}</p>
             : <p>"Waiting to test."</p>
         }
       </div>

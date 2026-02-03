@@ -1,6 +1,6 @@
 namespace ExData.Models;
 
-public class Exercise : PossibleUserCreatedEntity
+public class Exercise : TrackedEntity
 {
     public int Id { get; set; }
     public required string Name { get; set; }

@@ -14,8 +14,13 @@ const createPath = (segment: string = "") => {
   );
 }
 
-function handleApiError(): void {
-
+async function handleApiError(response: Response): Promise<never> {
+  let message = response.statusText;
+  const body = (await response.json()) as Partial<ErrorResponseBody>;
+  if (typeof body.message === "string" && body.message !== "") {
+    message = body.message;
+  }
+  throw new ApiError(response.status, body.message ?? response.statusText);
 }
 
 export async function hello(): Promise<HelloResponse> {
@@ -38,10 +43,7 @@ export async function notFound() {
   console.log(response);
 
   if (!response.ok) {
-    const body: ErrorResponseBody = await response.json();
-    console.log(body);
-    console.log(body.message);
-    throw new ApiError(response.status, body.message ?? "Unkown error.");
+    await handleApiError(response);
   }
 
   return response.json();
