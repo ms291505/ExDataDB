@@ -1,3 +1,4 @@
+using ExData.Api.Endpoints;
 using ExData.Data;
 using ExData.Data.Seed;
 using Microsoft.EntityFrameworkCore;
@@ -46,5 +47,6 @@ api.MapGet("/unauthorized", () => TypedResults.Unauthorized());
 api.MapGet("/forbidden", () => TypedResults.Forbid());
 api.MapGet("/created", () => TypedResults.Created());
 api.MapGet("/conflict", () => TypedResults.Conflict());
+api.MapExerciseEndpoints();
 
 app.Run();

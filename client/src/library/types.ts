@@ -8,3 +8,10 @@ export type Exercise = {
   equipment?: string,
   category: string
 };
+
+export interface PagedResponse<T> {
+  items: T[];
+  page: number;
+  pageSize: number;
+  totalCount: number;
+}

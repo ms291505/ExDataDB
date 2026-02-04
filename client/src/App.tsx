@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { hello, notFound } from './api/api'
+import { hello, notFound, getExercises, getExercisesPaginated } from './api/api'
 import { ApiError } from './library/responses.ts'
 import reactLogo from './assets/react.svg'
 import viteLogo from '/vite.svg'
@@ -27,6 +27,14 @@ function App() {
         throw new Error("Unkown error occured.");
       }
     }
+  }
+
+  async function exercises() {
+    await getExercises();
+  }
+  async function exercisesPaginated() {
+    const data = await getExercisesPaginated(1, 10);
+    console.log(data.items);
 
   }
 
@@ -67,6 +75,30 @@ function App() {
       <div>
         <button
           onClick={errorTest}
+        >
+          Test This Bad Boy!
+        </button>
+        {
+          errMessage
+            ? <p>{errMessage}</p>
+            : <p>"Waiting to test."</p>
+        }
+      </div>
+      <div>
+        <button
+          onClick={exercises}
+        >
+          Test This Bad Boy!
+        </button>
+        {
+          errMessage
+            ? <p>{errMessage}</p>
+            : <p>"Waiting to test."</p>
+        }
+      </div>
+      <div>
+        <button
+          onClick={exercisesPaginated}
         >
           Test This Bad Boy!
         </button>
