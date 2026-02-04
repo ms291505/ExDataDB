@@ -11,6 +11,7 @@ public static class ExerciseEndpoints
 
         exerciseGroup.MapGet("/", GetAll);
         exerciseGroup.MapGet("/paginated", GetPaginated);
+        exerciseGroup.MapGet("/cursor-pagination", GetCursor);
 
         exerciseGroup.MapGet("/{exerciseId:int}", GetById);
 
@@ -67,6 +68,57 @@ public static class ExerciseEndpoints
         );
     }
 
+    private static async Task<IResult> GetCursor(
+        ExDataDb db,
+        int? lastId = null,
+        string? lastName = null,
+        int pageSize = 25,
+        CancellationToken cancellationToken = default
+    )
+    {
+        pageSize = Math.Clamp(pageSize, 1, 100);
+
+        var query = db
+            .Exercises.AsNoTracking()
+            .OrderBy(e => e.Name)
+            .ThenBy(e => e.Id)
+            .AsQueryable();
+
+        if (lastId is not null && lastName is not null)
+        {
+            query = query.Where(e =>
+                string.Compare(e.Name, lastName) > 0 || (e.Name == lastName && e.Id > lastId)
+            );
+        }
+
+        var totalCount = await query.CountAsync();
+
+        var items = await query
+            .Take(pageSize + 1)
+            .Select(e => new ExerciseResponse
+            {
+                Id = e.Id,
+                Name = e.Name,
+                Force = e.Force,
+                Mechanic = e.Mechanic,
+                PrimaryMuscles = e.PrimaryMuscles,
+                SecondaryMuscles = e.SecondaryMuscles,
+                Equipment = e.Equipment,
+                Category = e.Category,
+            })
+            .ToListAsync(cancellationToken);
+
+        var hasMore = items.Count > pageSize;
+        if (hasMore)
+        {
+            items.RemoveAt(items.Count - 1);
+        }
+
+        return TypedResults.Ok(
+            new CursorPageResponse<ExerciseResponse>(items, hasMore, pageSize, totalCount)
+        );
+    }
+
     public static async Task<IResult> GetById()
     {
         throw new NotImplementedException();
@@ -75,6 +127,13 @@ public static class ExerciseEndpoints
     public sealed record PagedResponse<T>(
         IReadOnlyList<T> Items,
         int Page,
+        int PageSize,
+        int TotalCount
+    );
+
+    public sealed record CursorPageResponse<T>(
+        IReadOnlyList<T> Items,
+        bool hasMore,
         int PageSize,
         int TotalCount
     );

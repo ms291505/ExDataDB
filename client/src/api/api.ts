@@ -1,5 +1,5 @@
 import { ApiError, type HelloResponse, type ErrorResponseBody } from "../library/responses.ts";
-import { type PagedResponse, type Exercise } from "../library/types.ts";
+import { type PagedResponse, type Exercise, type CursorResponse } from "../library/types.ts";
 
 const API_BASE = import.meta.env.VITE_API_URL;
 
@@ -11,7 +11,7 @@ const createPath = (segment: string = "") => {
   }
 
   return (
-    `${API_BASE}/${segment}/`
+    `${API_BASE}/${segment}`
   );
 }
 
@@ -64,7 +64,22 @@ export async function getExercises() {
 }
 
 export async function getExercisesPaginated(page: number, pageSize: number): Promise<PagedResponse<Exercise>> {
-  const response = await fetch(`http://localhost:5192/api/exercises/paginated?page=${page}&pageSize=${pageSize}`, {
+  const response = await fetch(createPath(`exercises/paginated?page=${page}&pageSize=${pageSize}`), {
+    method: "GET",
+    credentials: "include"
+  });
+
+  return response.json();
+}
+export async function getExercisesCursor(pageSize: number, lastId?: number, lastName?: string): Promise<CursorResponse<Exercise>> {
+
+  const response = await fetch(createPath(`exercises/cursor-pagination?pageSize=${pageSize}${lastId
+    ? "&lastId=" + lastId
+    : ""
+    }${lastName
+      ? "&lastName=" + lastName
+      : ""
+    }`), {
     method: "GET",
     credentials: "include"
   });

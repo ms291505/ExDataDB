@@ -15,3 +15,9 @@ export interface PagedResponse<T> {
   pageSize: number;
   totalCount: number;
 }
+export interface CursorResponse<T> {
+  items: T[];
+  hasMore: boolean;
+  pageSize: number;
+  totalCount: number;
+}
