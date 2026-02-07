@@ -10,6 +10,8 @@ const createPath = (segment: string = "") => {
     clean = clean.slice(1);
   }
 
+  console.log(`${API_BASE}/${segment}`);
+
   return (
     `${API_BASE}/${segment}`
   );
