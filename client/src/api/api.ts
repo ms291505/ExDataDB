@@ -16,6 +16,7 @@ const createPath = (segment: string = "") => {
 }
 
 async function handleApiError(response: Response): Promise<never> {
+  console.log(response);
   let message = response.statusText;
   const body = (await response.json()) as Partial<ErrorResponseBody>;
   if (typeof body.message === "string" && body.message !== "") {
