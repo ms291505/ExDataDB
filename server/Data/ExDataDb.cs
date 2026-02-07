@@ -5,7 +5,7 @@ namespace ExData.Data
 {
     public class ExDataDb : DbContext
     {
-        private string _dbNow = "SYSUTCDATETIME()";
+        private string _dbNow = "NOW()";
 
         public ExDataDb(DbContextOptions<ExDataDb> options)
             : base(options) { }

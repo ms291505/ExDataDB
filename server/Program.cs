@@ -39,7 +39,7 @@ builder.Services.AddDbContext<ExDataDb>(options =>
 {
     if (builder.Environment.IsDevelopment())
     {
-        options.UseSqlServer(builder.Configuration.GetConnectionString("Default"));
+        options.UseNpgsql(builder.Configuration.GetConnectionString("Default"));
     }
     else
     {
