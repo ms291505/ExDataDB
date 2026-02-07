@@ -43,7 +43,15 @@ builder.Services.AddDbContext<ExDataDb>(options =>
     }
     else
     {
-        options.UseNpgsql(builder.Configuration.GetConnectionString("Default"));
+        var host = Environment.GetEnvironmentVariable("PGHOST");
+        var port = Environment.GetEnvironmentVariable("PGPORT");
+        var db = Environment.GetEnvironmentVariable("PGDATABASE");
+        var user = Environment.GetEnvironmentVariable("PGUSER");
+        var pass = Environment.GetEnvironmentVariable("PGPASSWORD");
+
+        var connectionString =
+            $"Host={host};Port={port};Database={db};Username={user};Password={pass};SSL Mode=Require;Trust Server Certificate=true";
+        options.UseNpgsql(connectionString);
     }
 });
 
@@ -77,7 +85,7 @@ api.MapGet("/created", () => TypedResults.Created());
 api.MapGet("/conflict", () => TypedResults.Conflict());
 api.MapExerciseEndpoints();
 
-var port = Environment.GetEnvironmentVariable("PORT") ?? "5192";
+var port = Environment.GetEnvironmentVariable("PGPORT") ?? "5192";
 app.Urls.Add($"http://*:{port}");
 
 app.Run();
