@@ -27,7 +27,7 @@ builder.Services.AddCors(options =>
         policy =>
         {
             policy
-                .WithOrigins("https://exdatadb-production.up.railway.app/")
+                .WithOrigins("https://exdatadb-production.up.railway.app")
                 .AllowAnyMethod()
                 .AllowAnyHeader()
                 .AllowCredentials();

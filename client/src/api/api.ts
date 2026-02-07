@@ -4,7 +4,7 @@ import { type PagedResponse, type Exercise, type CursorResponse } from "../libra
 const API_BASE = import.meta.env.VITE_API_URL;
 
 const createPath = (segment: string = "") => {
-  if (segment == "") return `${API_BASE}/`;
+  if (segment == "") return `${API_BASE}/api/`;
   let clean = segment;
   if (clean.charAt(0) === "/") {
     clean = clean.slice(1);
