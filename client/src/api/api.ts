@@ -21,7 +21,7 @@ async function handleApiError(response: Response): Promise<never> {
   if (typeof body.message === "string" && body.message !== "") {
     message = body.message;
   }
-  throw new ApiError(response.status, body.message ?? response.statusText);
+  throw new ApiError(response.status, message ?? response.statusText);
 }
 
 export async function hello(): Promise<HelloResponse> {
