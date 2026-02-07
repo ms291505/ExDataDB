@@ -6,7 +6,12 @@ namespace ExData.Data.Seed;
 
 public static class LoadExercisesJson
 {
-    public static readonly string _exercisesJson = "Data/Seed/exercises.json";
+    public static readonly string _exercisesJson = Path.Combine(
+        AppContext.BaseDirectory,
+        "Data",
+        "Seed",
+        "exercises.json"
+    );
 
     public static async Task<List<Exercise>> ReadExercises()
     {
