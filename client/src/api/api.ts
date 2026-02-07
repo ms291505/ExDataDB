@@ -56,11 +56,11 @@ export async function getExercises() {
     credentials: "include"
   });
 
-  console.log(response.json());
-
   if (!response.ok) {
     await handleApiError(response);
   }
+
+  return response.json();
 }
 
 export async function getExercisesPaginated(page: number, pageSize: number): Promise<PagedResponse<Exercise>> {

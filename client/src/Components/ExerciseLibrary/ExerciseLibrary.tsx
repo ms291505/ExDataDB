@@ -1,15 +1,20 @@
-import { Box, Button, Typography } from "@mui/material";
-import { useExerciseLibraryContext } from "../../Contexts/ExerciseLibraryContext";
+import { Box, Typography } from "@mui/material";
+import { getExercises } from "../../api/api";
+import { useQuery } from "@tanstack/react-query";
+import type { Exercise } from "../../library/types";
 
 export default function ExerciseLibrary() {
 
-  const { counter, setCounter } = useExerciseLibraryContext();
+  const exercises = useQuery({
+    queryKey: ["exercises"], queryFn: getExercises
+  });
 
   return (
     <Box>
       <Typography variant="h2">The ExData Library</Typography>
-      <p>{counter}</p>
-      <Button onClick={() => setCounter(counter + 1)}>Push</Button>
+      {exercises.data?.map((e: Exercise) => (
+        <li key={e.id}>{e.name}</li>
+      ))}
     </Box>
   )
 }

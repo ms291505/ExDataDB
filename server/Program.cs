@@ -37,6 +37,7 @@ using (var scope = app.Services.CreateScope())
     var db = scope.ServiceProvider.GetRequiredService<ExDataDb>();
     await LoadExercisesJson.InsertExercises(db);
 }
+
 var api = app.MapGroup("/api");
 
 api.MapGet("/", () => "Hello World!");

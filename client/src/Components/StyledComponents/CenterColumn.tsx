@@ -5,5 +5,4 @@ export const CenteredColumn = styled(Box)(() => ({
   display: "flex",
   flexDirection: "column",
   alignItems: "center",
-  textAlign: "center",
 }));
