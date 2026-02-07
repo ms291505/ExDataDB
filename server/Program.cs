@@ -20,9 +20,31 @@ builder.Services.AddCors(options =>
     );
 });
 
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy(
+        "AllowFrontend",
+        policy =>
+        {
+            policy
+                .WithOrigins("https://exdatadb.onrender.com/")
+                .AllowAnyMethod()
+                .AllowAnyHeader()
+                .AllowCredentials();
+        }
+    );
+});
+
 builder.Services.AddDbContext<ExDataDb>(options =>
 {
-    options.UseSqlServer(builder.Configuration.GetConnectionString("Default"));
+    if (builder.Environment.IsDevelopment())
+    {
+        options.UseSqlServer(builder.Configuration.GetConnectionString("Default"));
+    }
+    else
+    {
+        options.UseNpgsql(builder.Configuration.GetConnectionString("Default"));
+    }
 });
 
 var app = builder.Build();
@@ -31,10 +53,15 @@ if (app.Environment.IsDevelopment())
 {
     app.UseCors("AllowViteDev");
 }
+else
+{
+    app.UseCors("AllowFrontend");
+}
 
 using (var scope = app.Services.CreateScope())
 {
     var db = scope.ServiceProvider.GetRequiredService<ExDataDb>();
+    await db.Database.MigrateAsync();
     await LoadExercisesJson.InsertExercises(db);
 }
 
@@ -49,5 +76,8 @@ api.MapGet("/forbidden", () => TypedResults.Forbid());
 api.MapGet("/created", () => TypedResults.Created());
 api.MapGet("/conflict", () => TypedResults.Conflict());
 api.MapExerciseEndpoints();
+
+var port = Environment.GetEnvironmentVariable("PORT") ?? "5192";
+app.Urls.Add($"http://*:{port}");
 
 app.Run();
