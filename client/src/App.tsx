@@ -1,15 +1,11 @@
 import { useState } from 'react'
 import { hello, notFound, getExercises, getExercisesPaginated, getExercisesCursor } from './api/api'
 import { ApiError } from './library/responses.ts'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
 import ExerciseLibrary from './Components/ExerciseLibrary/ExerciseLibrary.tsx'
-import { Box, Container } from '@mui/material'
 import { CenteredColumn } from './Components/StyledComponents/CenterColumn.tsx'
+import ExerciseLibraryContextProvider from './Contexts/ExerciseLibraryContext.tsx'
 
 function App() {
-  const [count, setCount] = useState(0)
-
   const [message, setMessage] = useState("");
   const [errMessage, setErrMessage] = useState("");
 
@@ -48,67 +44,69 @@ function App() {
 
   return (
     <CenteredColumn>
-      <ExerciseLibrary />
-      <div>
-        <button
-          onClick={testIt}
-        >
-          Test This Bad Boy!
-        </button>
-        {
-          message
-            ? <p>{message}</p>
-            : <p>"Waiting to test."</p>
-        }
-      </div>
-      <div>
-        <button
-          onClick={errorTest}
-        >
-          Test This Bad Boy!
-        </button>
-        {
-          errMessage
-            ? <p>{errMessage}</p>
-            : <p>"Waiting to test."</p>
-        }
-      </div>
-      <div>
-        <button
-          onClick={exercises}
-        >
-          Test This Bad Boy!
-        </button>
-        {
-          errMessage
-            ? <p>{errMessage}</p>
-            : <p>"Waiting to test."</p>
-        }
-      </div>
-      <div>
-        <button
-          onClick={exercisesPaginated}
-        >
-          Test This Bad Boy!
-        </button>
-        {
-          errMessage
-            ? <p>{errMessage}</p>
-            : <p>"Waiting to test."</p>
-        }
-      </div>
-      <div>
-        <button
-          onClick={exercisesCursor}
-        >
-          Test This Bad Boy!
-        </button>
-        {
-          errMessage
-            ? <p>{errMessage}</p>
-            : <p>"Waiting to test."</p>
-        }
-      </div>
+      <ExerciseLibraryContextProvider>
+        <ExerciseLibrary />
+        <div>
+          <button
+            onClick={testIt}
+          >
+            Test This Bad Boy!
+          </button>
+          {
+            message
+              ? <p>{message}</p>
+              : <p>"Waiting to test."</p>
+          }
+        </div>
+        <div>
+          <button
+            onClick={errorTest}
+          >
+            Test This Bad Boy!
+          </button>
+          {
+            errMessage
+              ? <p>{errMessage}</p>
+              : <p>"Waiting to test."</p>
+          }
+        </div>
+        <div>
+          <button
+            onClick={exercises}
+          >
+            Test This Bad Boy!
+          </button>
+          {
+            errMessage
+              ? <p>{errMessage}</p>
+              : <p>"Waiting to test."</p>
+          }
+        </div>
+        <div>
+          <button
+            onClick={exercisesPaginated}
+          >
+            Test This Bad Boy!
+          </button>
+          {
+            errMessage
+              ? <p>{errMessage}</p>
+              : <p>"Waiting to test."</p>
+          }
+        </div>
+        <div>
+          <button
+            onClick={exercisesCursor}
+          >
+            Test This Bad Boy!
+          </button>
+          {
+            errMessage
+              ? <p>{errMessage}</p>
+              : <p>"Waiting to test."</p>
+          }
+        </div>
+      </ExerciseLibraryContextProvider>
     </CenteredColumn>
   )
 }
